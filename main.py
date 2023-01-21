@@ -23,20 +23,30 @@ longitude = data.Long.to_list()
 ################################## Folium Map ####################################
 
 
-map = folium.Map(location=[40.34, -110.08], zoom_start=6)
+map = folium.Map(location=[40.34, -110.08], zoom_start=5, tiles="Stamen Terrain")
 
 
 # FeatureGroup is added to add all of the child markers in it. 
-fg_ensign_locations = folium.FeatureGroup(name="Ensign Locations")
+
 
 
 # zip() allows you to iterate over multiple lists at the same time. 
-# The for loop adds the child icons to the fg FeatureGroup 
-for lat, lng, fac_name in zip(latitude, longitude, facility_name):
-    fg_ensign_locations.add_child(folium.Marker(location=[lat, lng], popup=str(fac_name), icon=folium.Icon(color="blue", icon='glyphicon glyphicon-plus-sign')))
+
+for lat, lng, fac_name, fac_add, fac_city, fac_state, fac_zip, tel_phone in zip(latitude, longitude, facility_name, facility_address, city, state, zipcode, phone_num):
+    fg_ensign_location = folium.FeatureGroup(name=str(fac_name), show=False)
+    full_add = str(fac_add) + " " + str(fac_city) + " " + str(fac_state) + " " + str(fac_zip)
+    html = '''<body style="background-color:Lavender;"><p><strong>'''+ str(fac_name)+'''</strong></p>
+    <p>Phone: ''' + str(tel_phone)+ '''</p>
+    <p>Address: <a href="http://maps.google.com/?q=''' +str(full_add)+ '''" target="_blank" rel="noreferrer noopener"> ''' +str(full_add)+'''</p></body></a>'''
+
+    iframe = folium.IFrame(html,width=200,height=120)
+
+    popup = folium.Popup(iframe)
+
+    fg_ensign_location.add_child(folium.Marker(location=[lat, lng], popup=popup, icon=folium.Icon(color="blue", icon='glyphicon glyphicon-plus-sign')))
 
 
-map.add_child(fg_ensign_locations)
+    map.add_child(fg_ensign_location)
 folium.LayerControl().add_to(map)
 map.save("ensignmap.html")
 
