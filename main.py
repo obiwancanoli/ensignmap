@@ -33,7 +33,7 @@ map = folium.Map(location=[40.34, -110.08], zoom_start=5, tiles="Stamen Terrain"
 # zip() allows you to iterate over multiple lists at the same time. 
 
 for lat, lng, fac_name, fac_add, fac_city, fac_state, fac_zip, tel_phone in zip(latitude, longitude, facility_name, facility_address, city, state, zipcode, phone_num):
-    fg_ensign_location = folium.FeatureGroup(name=str(fac_name), show=False)
+    fg_ensign_location = folium.FeatureGroup(name=str(fac_name), show=True)
     full_add = str(fac_add) + " " + str(fac_city) + " " + str(fac_state) + " " + str(fac_zip)
     html = '''<body style="background-color:Lavender;"><p><strong>'''+ str(fac_name)+'''</strong></p>
     <p>Phone: ''' + str(tel_phone)+ '''</p>
